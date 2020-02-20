@@ -12,7 +12,7 @@ app.config['UPLOAD_FOLDER'] = os.getcwd()
 
 doc = UploadSet('doc', DOCUMENTS)
 configure_uploads(app, doc)
-patch_request_class(app)git
+patch_request_class(app)
 
 
 class UploadForm(Form):
