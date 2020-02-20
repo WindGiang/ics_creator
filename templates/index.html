@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>AHUT课表导入日历</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="/static/CSS/bootstrap.css" type="text/css">
+  </head>
+  <body>
+        <div class="container">
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-header">
+                        说明
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">"Make the calendar great again"</h4>
+                        <p>本工具可将AHUT课程表生成ics文件，导入日历使用，目前功能需要手动下载课程表页面的Excel文件，预计在下一个版本中可实现自动爬取</p>
+                        <p>请注意，上传Excel文件请不要修改其中的任何格式，否则会导致解析失败，而且目前对于单双周英语课还没有很好的解析，如遇到解析失败，请联系我们</p>
+                        <h5>预计在下一个版本中更新的功能</h5>
+                        <ul>
+                            <li>输入学号密码自动获取</li>
+                            <li>适配更多格式的课程</li>
+                            <li>生成的文件发送至邮箱</li>
+                        </ul>
+                        <h5>免责声明</h5>
+                            <p>
+                        对于本工具生成的课程表，我们以及经过很多次测试保证稳定，但还是请自己仔细核对上课时间段以及是否漏添课程。
+                    </p>
+                        <p>我们对于用户隐私非常重视，不会以一切形式利用所得到的信息</p>
+                        <p>
+                            BUG反馈:email:<a href="mailto:jfthebestone@163.com">jfthebestone@163.com</a>
+                            
+                        </p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        文件上传
+                    </div>
+                    <div class="card-body">
+                        <form action="/" method="post" enctype="multipart/form-data">
+                            {{ form.hidden_tag() }}
+                            {{ form.doc }}
+                            {% for error in form.doc.errors %}
+                                <span style="color: red;">{{ error }}</span>
+                            {% endfor %}
+                            {{ form.submit }}
+                        </form>
+                    </div>
+                </div><br>
+                <div class="card">
+                    <div class="card-header">
+                      ics的妙用
+                    </div>
+                    <div class="card-body">
+                    <p>
+                        <strong>一、对于IOS系统</strong>这是最优雅的提醒方式，不用进入任何一个app，使用Safari打开本页面，即可自动下载并导入日历
+                    </p>
+                    <p>
+                        <strong>二、对于安卓系统</strong>由于国内谷歌服务阉割严重，所以只有少数几个厂商的日历可以使用，如果你愿意折腾，也可以使用一定姿势安装谷歌日历
+                    </p>
+                    <p>
+                        <strong>三、windows电脑</strong>可以导入win10自带的日历或者使用outlook
+                    </p>
+                    
+                    </div>
+                  </div>
+            </div>
+        </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="/static/JS/jquery-3.4.1.js" type="text/javascript"></script>
+    <script src="/static/JS/popper.min.js" type="text/javascript"></script>
+    <script src="/static/JS/bootstrap.js" type="text/javascript"></script>
+  </body>
+</html>
