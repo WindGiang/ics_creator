@@ -1,17 +1,27 @@
+"""本项暂停使用，切换为API抓取"""
 import requests
 import re
 import os
 from lxml import etree
 from bs4 import BeautifulSoup
+import execjs
 
-def get_cookie():
-    host = 'http://jwxt.ahut.edu.cn/'
-    session = requests.session()
-    session.get(host, headers={
+
+def get_session():
+    host = 'http://jwxt.ahut.edu.cn/jsxsd/'
+    ses = requests.session()
+    ses.get(url=host, headers={
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
                       'Chrome/79.0.3945.130 Safari/537.36 '
     })
-    return session
+    print(ses.headers)
+    return ses
+
+
+def encodeInp(msg):
+    with open('../static/JS/conwork.js', encoding='utf-8') as f:
+        js = execjs.compile(f.read())
+        return str(js.call('encodeInp', msg))
 
 
 class Student:
@@ -19,8 +29,15 @@ class Student:
     def __init__(self, username, password):
         self.password = password
         self.username = username
-        self.session = get_cookie()
-        self.encoded = self.get_code(self.session)
+        self.session = get_session()
+        '''self.encoded = self.get_code(self.session)'''
+        self.code = encodeInp(self.username) + "%%%" + encodeInp(self.password)
+
+    def get_cookie(self):
+        cookies = self.session.cookies.get_dict()
+        cookies = str(cookies).replace("{", '').replace("'", '').replace(":", '=').replace("}", '').replace(",", ";")
+        cookies = cookies.replace(" ", '')
+        return cookies
 
     def get_code(self, session):
         str_url = 'http://jwxt.ahut.edu.cn/Logon.do?method=logon&flag=sess'
@@ -54,11 +71,11 @@ class Student:
         return encode
 
     def login(self):
-        login_url = 'http://jwxt.ahut.edu.cn/Logon.do?method=logon'
+        login_url = 'http://jwxt.ahut.edu.cn/jsxsd/xk/LoginToXk'
         data = {
             'userAccount': self.username,
             'userPassword': '',
-            'encode': self.encoded,
+            'encode': self.code,
         }
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,'
@@ -78,8 +95,8 @@ class Student:
         r = self.session.post(login_url, headers=headers, data=data)
         try:
             html = etree.HTML(r.text)
-            error = html.xpath('//font[@color="red"]/text()')[0]
-            print(error)
+            print(html)
+            print(r)
         except:
             print(r.text)
 
@@ -109,8 +126,8 @@ class Student:
         print(list_class)
 
 
-if __name__ == '__main__':
-    student = Student('id', 'password')
+def main():
+    student = Student('179074010', ',.jf100_')
     # 这里实例化一个学生类，可以有登陆方法
     student.login()
-    student.getClassJson()
+    '''student.getClassJson()'''
