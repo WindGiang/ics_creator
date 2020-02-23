@@ -1,4 +1,5 @@
 import json
+import os
 import uuid
 from operator import eq
 
@@ -13,7 +14,7 @@ timedelta_stand = daylight_date - FirstWeekDate
 week_length = int(timedelta_stand.days / 7) + 1  # 表示第几周第几天之前是标准时间，其余是夏令时 对于本学期来说
 day_length = int(timedelta_stand.days % 7)
 
-with open('../ExcelToCal/Timetable.json', 'r') as timejson:
+with open(os.path.abspath('../static/Json/Timetable.json'), 'r') as timejson:
     time_table = json.load(timejson)
     timejson.close()
 
@@ -48,7 +49,9 @@ class Course:
         return FirstWeekDate + timedelta(days=Day, hours=Hour, minutes=Minute)
 
     def getDescription(self):
-        return str(self.c_name + self.c_teacher + self.classroom)
+        return str(
+            '课程名称：' + self.c_name + ' ' + '老师：' + self.c_teacher + ' ' + '教室位置' + self.classroom +
+            ' ' + '第' + str(self.start_week)+'-'+str(self.end_week)+'周')
 
     def getEvent(self):
         event = Event()
@@ -60,12 +63,13 @@ class Course:
         event['uid'] = str(uuid.uuid4())
         event.add('rrule',
                   {'freq': 'weekly', 'interval': str(self.step), 'count': str(self.end_week - self.start_week + 1)})
+        event.add('description', self.getDescription())
         return event
 
 
-def JsonLoadHandle():
+def JsonLoadHandle(filename):
     week_length_real = 1
-    jf = open('../../../ExcelToCal/ClassInfo.json', 'r')
+    jf = open('179074010.json', 'r')
     text = json.load(jf)
     jf.close()
     flag = []
@@ -88,10 +92,10 @@ def JsonLoadHandle():
                                  item['ClassTime']['End'], item['ClassRoom'], 'Standard')
             if item['Week']['StartWeek'] <= week_length_real:
                 course_list.append(course_item)
-            course_item = Course(item['ClassName'], week_length_real+1, item['Week']['EndWeek'],
+            course_item = Course(item['ClassName'], week_length_real + 1, item['Week']['EndWeek'],
                                  item['Teacher'], item['Weekday'], item['ClassTime']['Start'],
                                  item['ClassTime']['End'], item['ClassRoom'], 'Daylight')
-            if week_length_real+1 <= item['Week']['EndWeek']:
+            if week_length_real + 1 <= item['Week']['EndWeek']:
                 course_list.append(course_item)
         elif item['Week']['StartWeek'] > week_length:
             course_item = Course(item['ClassName'], item['Week']['StartWeek'], item['Week']['EndWeek'],
@@ -106,8 +110,8 @@ def JsonLoadHandle():
     return course_list
 
 
-def ical_creat():
-    courselist = JsonLoadHandle()
+def ical_creat(filename):
+    courselist = JsonLoadHandle(filename)
     cal = Calendar()
     cal.add('prodid', '-//My CourseTable//')
     cal.add('version', '2.0')
@@ -124,6 +128,10 @@ def ical_creat():
     cal.add_component(tz)
     for course in courselist:
         cal.add_component(course.getEvent())
-    f = open('../../../ExcelToCal/example.ics', 'wb')
+    f = open(os.path.abspath('../../cache/ics/' + filename + '.ics'), 'wb')
     f.write(cal.to_ical())
     f.close()
+
+
+if __name__ == '__main__':
+    ical_creat('filename')

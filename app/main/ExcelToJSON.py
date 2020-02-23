@@ -4,8 +4,8 @@ import json
 import xlrd
 
 
-def excel_to_json(filename, filetype):
-    data = xlrd.open_workbook(filename+'.'+filetype)
+def excel_to_json(filename):
+    data = xlrd.open_workbook('/cache/excel/学生个人课表.xls')
     table = data.sheets()[0]
     ClassNameList = []
     TeacherNameList = []
@@ -48,7 +48,11 @@ def excel_to_json(filename, filetype):
         if i != len(ClassNameList) - 1:
             ClassInfo += ","
     ClassInfo += ']\n}'
-    with open('../icsCreator/temp/'+filename+'.json', 'w+') as f:
+    with open('/Users/windgiang/PycharmProjects/icsCreator/cache/json/'+filename+'.json', 'w+') as f:
         f.write(ClassInfo)
         f.close()
     print("done!")
+
+
+if __name__ == '__main__':
+    excel_to_json('学生个人课表_179074010')
