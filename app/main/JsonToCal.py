@@ -6,6 +6,7 @@ from operator import eq
 from icalendar import Calendar, Event, Timezone, Alarm, TimezoneStandard
 from datetime import datetime, timedelta
 from pytz import timezone, utc
+from flask import make_response,send_file
 
 FirstWeekDate = datetime(2020, 2, 17, 00, 00, 00, tzinfo=timezone("Asia/Shanghai"))
 daylight_date = datetime(2020, month=5, day=1, hour=0, minute=0, tzinfo=timezone('Asia/Shanghai'))
@@ -14,7 +15,7 @@ timedelta_stand = daylight_date - FirstWeekDate
 week_length = int(timedelta_stand.days / 7) + 1  # 表示第几周第几天之前是标准时间，其余是夏令时 对于本学期来说
 day_length = int(timedelta_stand.days % 7)
 
-with open(os.path.abspath('../static/Json/Timetable.json'), 'r') as timejson:
+with open(os.path.abspath('app/static/Json/Timetable.json'), 'r') as timejson:
     time_table = json.load(timejson)
     timejson.close()
 
@@ -49,9 +50,14 @@ class Course:
         return FirstWeekDate + timedelta(days=Day, hours=Hour, minutes=Minute)
 
     def getDescription(self):
-        return str(
-            '课程名称：' + self.c_name + ' ' + '老师：' + self.c_teacher + ' ' + '教室位置' + self.classroom +
-            ' ' + '第' + str(self.start_week)+'-'+str(self.end_week)+'周')
+        if self.time_zone == 'Standard':
+            return str(
+                '课程名称：' + self.c_name + ' 老师：' + self.c_teacher + ' 教室位置：' + self.classroom +
+                ' 第' + str(self.start_week) + '-' + str(self.end_week) + '周' + ' 冬令时')
+        else:
+            return str(
+                '课程名称：' + self.c_name + ' 老师：' + self.c_teacher + ' 教室位置：' + self.classroom +
+                ' 第' + str(self.start_week) + '-' + str(self.end_week) + '周' + ' 夏令时')
 
     def getEvent(self):
         event = Event()
@@ -69,7 +75,7 @@ class Course:
 
 def JsonLoadHandle(filename):
     week_length_real = 1
-    jf = open('179074010.json', 'r')
+    jf = open(os.path.abspath('cache/json/'+filename+'.json'), 'r')
     text = json.load(jf)
     jf.close()
     flag = []
@@ -128,10 +134,9 @@ def ical_creat(filename):
     cal.add_component(tz)
     for course in courselist:
         cal.add_component(course.getEvent())
-    f = open(os.path.abspath('../../cache/ics/' + filename + '.ics'), 'wb')
+    f = open(os.path.abspath('cache/ics/' + filename + '.ics'), 'wb')
     f.write(cal.to_ical())
     f.close()
-
-
-if __name__ == '__main__':
-    ical_creat('filename')
+    response = make_response(send_file(os.path.abspath('cache/ics/' + filename + '.ics')))
+    response.headers["Content-Disposition"] = "attachment; filename=CourseTable-2019-2020-2.ics;"
+    return response

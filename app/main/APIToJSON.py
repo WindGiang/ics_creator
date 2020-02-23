@@ -1,5 +1,7 @@
 # coding=utf-8
 import json
+import os
+
 from QZ_API import SW
 
 json_list = {}
@@ -17,10 +19,7 @@ class JsonCreator:
     def creatJson(self):
         course_list = self.stu.getKbcx()
         print('已经爬取到json')
-        print(course_list)
-
         for course_api in course_list:
-            print(course_api)
             course['ClassName'] = course_api['kcmc']
             week['StartWeek'] = int(course_api['kkzc'].split('-')[0])
             week['EndWeek'] = int(course_api['kkzc'].split('-')[1])
@@ -35,10 +34,6 @@ class JsonCreator:
             course_list_cov.append(course.copy())
 
         json_list['ClassInfo'] = course_list_cov
-        with open(self.account + '.json', 'w+', encoding='utf-8') as j:
+        with open(os.path.abspath('cache/json/'+self.account + '.json'), 'w+', encoding='utf-8') as j:
             j.write(json.dumps(json_list, indent=4, ensure_ascii=False))
 
-
-if __name__ == '__main__':
-    jsonc = JsonCreator('username', 'password')
-    jsonc.creatJson()

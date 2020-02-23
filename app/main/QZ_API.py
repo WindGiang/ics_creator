@@ -26,9 +26,9 @@ class SW(object):
         super(SW, self).__init__()
         self.account = account
         self.password = password
-        self.isLogin = False
         self.session = self.login()
 
+    isLogin = False
     HEADERS = {
         'User-Agent': 'Mozilla/5.0 (Linux; U; Mobile; Android 6.0.1;C107-9 Build/FRF91 )',
         'Referer': 'http://www.baidu.com',
@@ -52,14 +52,12 @@ class SW(object):
         }
         session = requests.Session()
         req = session.get(self.url, params=params, timeout=5, headers=self.HEADERS)
-        print(req.text)
         s = json.loads(req.text)
         # print(s['msg'])
         # print(s['success'])
         if not s['success']:
             exit(0)
-        else:
-            self.isLogin = True
+        self.isLogin = True
         self.HEADERS['token'] = s['token']
         # print(self.HEADERS)
         return session
@@ -95,8 +93,6 @@ class SW(object):
             "xh": self.account
         }
         req = self.GetHandle(params)
-        print(req)
-        print(req.text)
         pass
 
     def getKbcx(self, week=20):
@@ -117,17 +113,6 @@ class SW(object):
                     list_class.append(class_l)
         return list_class
 
-    def getAllClass(self, zc=-1):
-        s = json.loads(self.getCurrentTime())
-        params = {
-            "method": "getKbcx",
-            "xh": self.account,
-            "xnxqid": "2019-2020-2"
-        }
-        req = self.GetHandle(params)
-        print(req)
-        print(req.text)
-
     def getKxJscx(self, idleTime="0304"):
         params = {
             "method": "getKxJscx",
@@ -136,7 +121,6 @@ class SW(object):
             "jxlid": 1
         }
         req = self.GetHandle(params)
-        print(req.text)
 
     def getCjcx(self, sy=""):
         params = {
@@ -145,7 +129,6 @@ class SW(object):
             "xnxqid": sy
         }
         req = self.GetHandle(params)
-        print(req.text)
 
     def getKscx(self):
         params = {
@@ -153,4 +136,3 @@ class SW(object):
             "xh": self.account,
         }
         req = self.GetHandle(params)
-        print(req.text)
