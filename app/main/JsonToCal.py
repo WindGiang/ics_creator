@@ -65,7 +65,7 @@ class Course:
 
 def JsonLoadHandle():
     week_length_real = 1
-    jf = open('../ExcelToCal/ClassInfo.json', 'r')
+    jf = open('../../../ExcelToCal/ClassInfo.json', 'r')
     text = json.load(jf)
     jf.close()
     flag = []
@@ -124,6 +124,6 @@ def ical_creat():
     cal.add_component(tz)
     for course in courselist:
         cal.add_component(course.getEvent())
-    f = open('../ExcelToCal/example.ics', 'wb')
+    f = open('../../../ExcelToCal/example.ics', 'wb')
     f.write(cal.to_ical())
     f.close()
