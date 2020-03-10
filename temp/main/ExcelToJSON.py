@@ -52,7 +52,3 @@ def excel_to_json(filename):
         f.write(ClassInfo)
         f.close()
     print("done!")
-
-
-if __name__ == '__main__':
-    excel_to_json('学生个人课表_179074010')

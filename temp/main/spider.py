@@ -19,7 +19,7 @@ def get_session():
 
 
 def encodeInp(msg):
-    with open('../static/JS/conwork.js', encoding='utf-8') as f:
+    with open('JS/conwork.js', encoding='utf-8') as f:
         js = execjs.compile(f.read())
         return str(js.call('encodeInp', msg))
 
