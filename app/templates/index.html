@@ -11,7 +11,7 @@
   </head>
   <body>
         <div class="container">
-            <div class="col-6">
+            <div class="col-12">
                 {% for message in get_flashed_messages() %}
                 <div class="alert alert-info">
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -43,11 +43,12 @@
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">"Make the calendar great again"</h4>
-                        <p>本工具可将AHUT课程表生成ics文件，导入日历使用，目前功能需要手动下载课程表页面的Excel文件，预计在下一个版本中可实现自动爬取</p>
-                        <p>请注意，上传Excel文件请不要修改其中的任何格式，否则会导致解析失败，而且目前对于单双周英语课还没有很好的解析，如遇到解析失败，请联系我们</p>
+                        <p>如果你的课程包括<strong>单双周</strong>，请暂时不要使用本工具</p>
+                        <p>本工具可将AHUT课程表生成ics文件，导入日历使用，输入教务处帐号密码即可导出</p>
+                        <p>我们保证你的信息安全，但如果不放心，下一版本预计可上传Excel解析文件</p>
                         <h5>预计在下一个版本中更新的功能</h5>
+                        
                         <ul>
-                            <li>输入学号密码自动获取</li>
                             <li>适配更多格式的课程</li>
                             <li>生成的文件发送至邮箱</li>
                         </ul>

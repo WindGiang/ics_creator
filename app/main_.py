@@ -1,6 +1,4 @@
-import os
-
-from flask import Flask, render_template, redirect, url_for, flash, get_flashed_messages
+from flask import Flask, render_template, flash
 from flask_wtf import FlaskForm
 from wtforms import SubmitField, StringField, PasswordField
 from wtforms.validators import DataRequired
