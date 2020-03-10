@@ -6,7 +6,7 @@ from operator import eq
 from icalendar import Calendar, Event, Timezone, Alarm, TimezoneStandard
 from datetime import datetime, timedelta
 from pytz import timezone, utc
-from flask import make_response,send_file
+from flask import make_response, send_file
 
 FirstWeekDate = datetime(2020, 2, 17, 00, 00, 00, tzinfo=timezone("Asia/Shanghai"))
 daylight_date = datetime(2020, month=5, day=1, hour=0, minute=0, tzinfo=timezone('Asia/Shanghai'))
@@ -61,6 +61,10 @@ class Course:
 
     def getEvent(self):
         event = Event()
+        alarm = Alarm()
+        alarm.add('UID', uuid.uuid4())
+        alarm.add('TRIGGER', timedelta(minutes=-15))
+        alarm.add('ACTION', 'AUDIO')
         event.add('summary', self.c_name)
         event.add('dtstart', self.getStartTime(self.time_zone))
         event.add('dtend', self.getEndTime(self.time_zone))
@@ -70,6 +74,7 @@ class Course:
         event.add('rrule',
                   {'freq': 'weekly', 'interval': str(self.step), 'count': str(self.end_week - self.start_week + 1)})
         event.add('description', self.getDescription())
+        event.add_component(alarm)
         return event
 
 
