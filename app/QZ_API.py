@@ -56,7 +56,7 @@ class SW(object):
         # print(s['msg'])
         # print(s['success'])
         if not s['success']:
-            exit(0)
+            return
         self.isLogin = True
         self.HEADERS['token'] = s['token']
         # print(self.HEADERS)

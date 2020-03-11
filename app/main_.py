@@ -10,6 +10,7 @@ from JsonToCal import ical_creat
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY') or 'a hard string you never guess'
 
+
 class LoginForm(FlaskForm):
     user = StringField(
         label='学号',

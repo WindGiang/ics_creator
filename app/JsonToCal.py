@@ -6,7 +6,6 @@ from operator import eq
 from icalendar import Calendar, Event, Timezone, Alarm, TimezoneStandard
 from datetime import datetime, timedelta
 from pytz import timezone, utc
-from flask import make_response, send_file
 
 FirstWeekDate = datetime(2020, 2, 17, 00, 00, 00, tzinfo=timezone("Asia/Shanghai"))
 daylight_date = datetime(2020, month=5, day=1, hour=0, minute=0, tzinfo=timezone('Asia/Shanghai'))
@@ -142,6 +141,4 @@ def ical_creat(filename):
     f = open(os.path.abspath('cache/ics/' + filename + '.ics'), 'wb')
     f.write(cal.to_ical())
     f.close()
-    response = make_response(send_file(os.path.abspath('cache/ics/' + filename + '.ics')))
-    response.headers["Content-Disposition"] = "attachment; filename=CourseTable-2019-2020-2.ics;"
-    return response
+

@@ -58,4 +58,3 @@ class JsonCreator:
         json_list['ClassInfo'] = course_list_cov
         with open(os.path.abspath('cache/json/'+self.account + '.json'), 'w+', encoding='utf-8') as j:
             j.write(json.dumps(json_list, indent=4, ensure_ascii=False))
-
