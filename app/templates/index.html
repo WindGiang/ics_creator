@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>AHUT课表导入日历</title>
+    <title>AHUT课表导入日历tool</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -23,7 +23,7 @@
                         教务处帐号
                     </div>
                     <div class="card-body">
-                        <form action="" method="post" novalidate>
+                        <form action="" method="post" novalidate onsubmit="aftersubmit()">
                             {{ form.hidden_tag() }}
                             <div class="form-group">
                                {{ form.user.label }}
@@ -37,20 +37,43 @@
                         </form>
                     </div>
                 </div>
+
+               <br>
                 <div class="card">
+                    <div class="card-header">
+                      ics的妙用
+                    </div>
+                    <div class="card-body">
+                    <p>
+                        <strong>一、对于IOS系统</strong>使用Safari打开本页面，即可自动下载并导入日历
+                    </p>
+                    <p>
+                        <strong>二、对于安卓系统</strong>由于国内谷歌服务阉割严重，所以只有少数几个厂商的日历可以使用，如果你愿意折腾，也可以使用一定姿势安装谷歌日历,
+                        欢迎反馈你的机型是否可用以及特殊导入方法
+                    </p>
+                    <p>
+                        <strong>三、windows电脑</strong>可以导入win10自带的日历或者使用outlook
+                    </p>
+                    
+                    </div>
+                  </div>
+            <br>
+             <div class="card">
                     <div class="card-header">
                         说明
                     </div>
                     <div class="card-body">
                         <h4 class="card-title">"Make the calendar great again"</h4>
-                        <p>如果你的课程包括<strong>单双周</strong>，请暂时不要使用本工具</p>
                         <p>本工具可将AHUT课程表生成ics文件，导入日历使用，输入教务处帐号密码即可导出</p>
                         <p>我们保证你的信息安全，但如果不放心，下一版本预计可上传Excel解析文件</p>
                         <h5>预计在下一个版本中更新的功能</h5>
-                        
                         <ul>
-                            <li>适配更多格式的课程</li>
-                            <li>生成的文件发送至邮箱</li>
+                            <li>优化导出体验</li>
+                            <li>适配更多学校</li>
+                        </ul>
+                        <h5>挖坑</h5>
+                        <ul>
+                            <li>考试查询导入日历</li>
                         </ul>
                         <h5>免责声明</h5>
                             <p>
@@ -59,34 +82,49 @@
                         <p>我们对于用户隐私非常重视，不会以一切形式利用所得到的信息</p>
                         <p>
                             BUG反馈:email:<a href="mailto:jfthebestone@163.com">jfthebestone@163.com</a>
-                            
                         </p>
+                        <h5>开源地址</h5>
+                        <p>GitHub:<a href="https://github.com/WindGiang/ics_creator">ics_creator</a></p>
                     </div>
                 </div>
-               <br>
-                <div class="card">
-                    <div class="card-header">
-                      ics的妙用
-                    </div>
-                    <div class="card-body">
-                    <p>
-                        <strong>一、对于IOS系统</strong>这是最优雅的提醒方式，不用进入任何一个app，使用Safari打开本页面，即可自动下载并导入日历
-                    </p>
-                    <p>
-                        <strong>二、对于安卓系统</strong>由于国内谷歌服务阉割严重，所以只有少数几个厂商的日历可以使用，如果你愿意折腾，也可以使用一定姿势安装谷歌日历
-                    </p>
-                    <p>
-                        <strong>三、windows电脑</strong>可以导入win10自带的日历或者使用outlook
-                    </p>
-                    
-                    </div>
-                  </div>
             </div>
+        <p class="text-center text-muted">Copyright &copy WindGiang 2019-2020 皖ICP备20003032号</p>
         </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="../static/JS/jquery-3.4.1.js" type="text/javascript"></script>
     <script src="../static/JS/popper.min.js" type="text/javascript"></script>
     <script src="../static/JS/bootstrap.js" type="text/javascript"></script>
+    <script type="text/javascript">
+         var wait = 15;
+         var inputb = document.getElementById("submit");
+        function aftersubmit() {
+
+            if (wait===0){
+                alert("超时请重试");
+                inputb.removeAttribute('disabled');
+                inputb.setAttribute('value', "导出");
+                wait=15
+            }else {
+                inputb.setAttribute("disabled", true);
+                if (wait%3===0){
+                    inputb.setAttribute('value', "请等待...");
+                }
+                if(wait%3===1){
+                     inputb.setAttribute('value', "请等待..");
+                }
+                if(wait%3===2){
+                     inputb.setAttribute('value', "请等待.");
+                }
+                wait--;
+                setTimeout(function() {
+                    aftersubmit()
+                },1000)
+            }
+
+
+
+        }
+    </script>
   </body>
 </html>
