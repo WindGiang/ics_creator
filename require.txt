@@ -1,5 +1,5 @@
 Click==7.0
-Flask==1.1.1
+Flask==2.3.2
 Flask-Uploads==0.2.1
 Flask-WTF==0.14.3
 icalendar==4.0.4
